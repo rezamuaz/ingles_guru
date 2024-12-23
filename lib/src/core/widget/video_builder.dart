@@ -29,7 +29,10 @@ class VideoBuilder extends StatelessWidget {
               color: Colors.white, size: 50);
         } else if (snapshot.hasError) {
           // If there's an error, show a default image
-          return Text("Error :${snapshot.error}"); // Fallback asset image
+          return Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Center(child: Text("Error :${snapshot.error}",style: TextStyle(color: Colors.white),)),
+          ); // Fallback asset image
         } else if (!snapshot.hasData) {
           // If the image is loaded, display it
           return SvgPicture.asset(

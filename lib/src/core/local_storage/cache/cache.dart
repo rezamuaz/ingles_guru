@@ -14,9 +14,9 @@ class UnicornCache {
     FileInfo? cache = await DefaultCacheManager().getFileFromCache(url);
     try {
       //File exist in cache
-
-      //Return file when exist
-      if (cache!.file.existsSync()) {
+      if(cache != null){
+         //Return file when exist
+      if (cache.file.existsSync()) {
         return cache.file;
         // Download nonexist file
       } else {
@@ -27,6 +27,12 @@ class UnicornCache {
           return Future.error(e); // Return null if there was an error
         }
       }
+      }else{
+         
+       FileInfo file =  await DefaultCacheManager().downloadFile(url);
+       return file.file;
+      }
+    
       //File nonexist in cache
     } catch (e) {
       logger.e(e);

@@ -89,6 +89,7 @@ dependencies:
   sign_in_with_apple: ^6.1.4
   apple_sign_in_plugin: ^1.0.6
   just_audio_cache: ^0.1.2
+  auto_size_text_plus: ^3.0.2
 dependency_overrides:
   flutter_widget_from_html_core: ^0.15.2
   

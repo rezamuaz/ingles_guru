@@ -4,6 +4,7 @@ import 'package:apple_sign_in_plugin/apple_sign_in_plugin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sysbit/src/app.dart';
+import 'package:sysbit/src/core/common/network_exceptions.dart';
 import 'package:sysbit/src/core/constant/constant.dart';
 import 'package:sysbit/src/core/local_storage/model/token.dart';
 import 'package:sysbit/src/core/local_storage/model/user_data.dart';
@@ -61,7 +62,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               emit(const AuthState.isAuthorized());
             },
             failure: (error) {
-              emit(const AuthState.unAuthorized());
+              emit(AuthState.isError(error));
             },
           );
         },
@@ -98,16 +99,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                   return emit(const AuthState.isAuthorized());
                 },
                 failure: (error) {
-                  if (Platform.isAndroid) {
-                    googleSignIn.disconnect();
-                  }
-                  if (Platform.isIOS) {
-                    AppleSignInPlugin.signOut();
-                  }
+                  return error.maybeWhen(
+                    orElse: () => emit(AuthState.isError(error)),
+                    unauthorisedRequest: (reason) {
+                      if (Platform.isAndroid) {
+                        googleSignIn.disconnect();
+                      }
+                      if (Platform.isIOS) {
+                        AppleSignInPlugin.signOut();
+                      }
 
-                  SharedPrefs.removeToken();
-                  SharedPrefs.removeUser();
-                  return emit(const AuthState.unAuthorized());
+                      SharedPrefs.removeToken();
+                      SharedPrefs.removeUser();
+                      return emit(const AuthState.unAuthorized());
+                    },
+                  );
                 },
               );
             }

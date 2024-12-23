@@ -121,31 +121,31 @@ class NetworkExceptions with _$NetworkExceptions {
         switch (error.response?.statusCode) {
           case 400:
             networkExceptions = NetworkExceptions.badRequest(
-              reason: error.response?.data['message'],
+              reason: error.response?.data['error'],
             );
             break;
           case 401:
             networkExceptions = NetworkExceptions.unauthorisedRequest(
-              reason: error.response?.data['message'],
+              reason: error.response?.data['error'],
             );
             break;
           case 403:
             networkExceptions = NetworkExceptions.forbiddenRequest(
-              reason: error.response?.data['message'],
+              reason: error.response?.data['error'],
             );
             break;
           case 404:
             networkExceptions = NetworkExceptions.notFound(
-              reason: error.response?.data['message'],
+              reason: error.response?.data['error'],
             );
             break;
           case 405:
             networkExceptions = NetworkExceptions.methodNotAllowed(
-                reason: error.response?.data['message']);
+                reason: error.response?.data['error']);
             break;
           case 406:
             networkExceptions = NetworkExceptions.notAcceptable(
-                reason: error.response?.data['message']);
+                reason: error.response?.data['error']);
             break;
           case 408:
             networkExceptions = const NetworkExceptions.requestTimeout();

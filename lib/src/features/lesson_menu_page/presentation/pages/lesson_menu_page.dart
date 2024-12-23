@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sysbit/src/features/conversation_page/presentation/blocs/lesson_data_bloc.dart';
-import 'package:sysbit/src/features/lesson_menu_page/presentation/pages/lesson_menu_page_child.dart';
+import 'package:sysbit/src/features/lesson_menu_page/presentation/pages/lesson_menu_page_view.dart';
 
 class LessonMenuPage extends StatefulWidget {
   const LessonMenuPage(
@@ -20,7 +20,7 @@ class _LessonMenuPageState extends State<LessonMenuPage> {
     return BlocProvider(
       create: (context) => LessonDataBloc(),
       child: Builder(builder: (context) {
-        return LessonMenuPageChild(
+        return LessonMenuPageView(
           lessonCode: widget.lessonId ?? "",
           imageUrl: widget.imageUrl!,
           lessonTitle: widget.lessonTitle ?? "",

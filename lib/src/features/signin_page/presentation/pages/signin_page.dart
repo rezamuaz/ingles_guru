@@ -15,7 +15,10 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:http/http.dart' as http;
 import 'package:sysbit/gen/assets.gen.dart';
 import 'package:sysbit/src/app.dart';
+import 'package:sysbit/src/core/common/error_response_message.dart';
+import 'package:sysbit/src/core/common/network_exceptions.dart';
 import 'package:sysbit/src/core/constant/constant.dart';
+import 'package:sysbit/src/core/dialog/flash_message_wrapper.dart';
 import 'package:sysbit/src/core/network/network.dart';
 import 'package:sysbit/src/core/utils/utils.dart';
 import 'package:sysbit/src/features/root_page/presentation/pages/root_page.dart';
@@ -31,9 +34,10 @@ class SigninPage extends StatefulWidget {
 }
 
 class _SigninPageState extends State<SigninPage> {
+  ErrorResponseMessage? _error;
   GoogleSignInAccount? _currentUser;
   bool _isAuthorized = false; // has granted permissions?
-
+  
   AuthButtonType? buttonType;
   AuthIconType? iconType;
   bool isLoading = false;
@@ -85,18 +89,29 @@ class _SigninPageState extends State<SigninPage> {
     actions: [SizedBox.shrink()],
   );
 
+   void _onRequestError(NetworkExceptions e) {
+ 
+    e.maybeWhen(
+      orElse: () => FlashMessage.error(context: context, error: e),
+      unprocessableEntity: (m) => _error = m,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         state.whenOrNull(
+          isError: (error) => _onRequestError(error),
           isAuthorized: () {
             if (context.mounted) {
               hideProgressDialogue(context);
               Navigator.of(context)
                   .pushReplacement(Utils.createRoute(const RootPage()));
             }
+
           },
+
         );
       },
       child: Scaffold(

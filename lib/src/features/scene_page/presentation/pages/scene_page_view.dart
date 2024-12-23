@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sysbit/src/core/common/error_response_message.dart';
+import 'package:sysbit/src/core/common/network_exceptions.dart';
+import 'package:sysbit/src/core/dialog/flash_message_wrapper.dart';
 
 import 'package:sysbit/src/core/utils/utils.dart';
 import 'package:sysbit/src/core/widget/video_builder.dart';
@@ -14,24 +17,23 @@ class ScenePageView extends StatefulWidget {
 }
 
 class _ScenePageViewState extends State<ScenePageView> {
+  ErrorResponseMessage? _error;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         extendBodyBehindAppBar: true,
         backgroundColor: Colors.black,
-        body: Center(child: BlocBuilder<LessonDataBloc, LessonDataState>(
+        body: Center(child: BlocConsumer<LessonDataBloc, LessonDataState>(
+          listener: (context, state) {
+            state.whenOrNull(error: (error) => _onRequestError(error),);
+          },
           builder: (context, state) {
             return state.when(
               initial: () => const SizedBox(),
               loading: () => const SizedBox(),
-              loaded: (data) => data.sceneUrl!.isEmpty
-                  ? const Center(
-                      child: Text(
-                        "Data not found",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )
-                  : VideoBuilder(
+              loaded: (data) => data.sceneUrl != null?
+                  
+                  VideoBuilder(
                       url: data.sceneUrl ?? "",
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height,
@@ -41,10 +43,23 @@ class _ScenePageViewState extends State<ScenePageView> {
                             Utils.createRoute(ConversationPage(
                                 lessonCode: widget.lessonId ?? "")));
                       },
+                    ): const Center(
+                      child: Text(
+                        "Data not found",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-              error: (error) => const SizedBox(),
+              error: (error) => SizedBox(),
             );
           },
         )));
+  }
+  
+   void _onRequestError(NetworkExceptions e) {
+ 
+    e.maybeWhen(
+      orElse: () => FlashMessage.error(context: context, error: e),
+      unprocessableEntity: (m) => _error = m,
+    );
   }
 }

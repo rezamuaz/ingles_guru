@@ -37,7 +37,7 @@ class LessonDataBloc extends Bloc<LessonDataEvent, LessonDataState> {
           } else {
             var cache = SharedPrefs.instance
                 .getString("${Keys.jsonPrefixLessonConversation}_$lessonId");
-            var data = LessonData.fromJson(jsonDecode(cache ?? ""));
+            var data = cache != null? LessonData.fromJson(jsonDecode(cache)) : LessonData();
             return emit(LessonDataState.loaded(data));
           }
         },

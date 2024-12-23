@@ -1,0 +1,4 @@
+enum StateContentType {
+  full,
+  section,
+}

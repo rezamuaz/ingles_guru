@@ -5,6 +5,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:sysbit/src/core/local_storage/cache/cache.dart';
 import 'package:sysbit/src/core/local_storage/object_box/progress_repository.dart';
 import 'package:sysbit/src/core/utils/utils.dart';
+import 'package:sysbit/src/features/browser_page/presentation/pages/browser_page.dart';
 import 'package:sysbit/src/features/flash_menu_page/presentation/page/flash_menu_page.dart';
 import 'package:sysbit/src/features/lesson_menu_page/presentation/widget/menu_button.dart';
 import 'package:sysbit/src/features/lesson_menu_page/presentation/widget/menu_header.dart';
@@ -12,8 +13,8 @@ import 'package:sysbit/src/features/quiz/presentation/page/quiz_page.dart';
 import 'package:sysbit/src/features/scene_page/presentation/pages/scene_page.dart';
 import 'package:sysbit/src/features/tutorial_page/presentation/pages/tutorial_page.dart';
 
-class LessonMenuPageChild extends StatefulWidget {
-  const LessonMenuPageChild(
+class LessonMenuPageView extends StatefulWidget {
+  const LessonMenuPageView(
       {super.key,
       required this.lessonCode,
       required this.imageUrl,
@@ -23,10 +24,10 @@ class LessonMenuPageChild extends StatefulWidget {
   final String imageUrl;
 
   @override
-  State<LessonMenuPageChild> createState() => _LessonMenuPageChildState();
+  State<LessonMenuPageView> createState() => _LessonMenuPageViewState();
 }
 
-class _LessonMenuPageChildState extends State<LessonMenuPageChild> {
+class _LessonMenuPageViewState extends State<LessonMenuPageView> {
   final double space = 10;
 
   @override
@@ -145,8 +146,9 @@ class _LessonMenuPageChildState extends State<LessonMenuPageChild> {
                   iconBgColor: const Color(0xFFFB5812),
                   lable: "Learning Aids",
                   onPress: () async {
-                    await Utils.launchInBrowser(Uri.parse(
-                        "https://inglesguru.com/id/l${widget.lessonCode}"));
+                    Navigator.of(context,rootNavigator: true).push(Utils.zoomOutPageRoute(BrowserPage(title: "Learning Aids", url: "https://inglesguru.com/id/l${widget.lessonCode}")));
+                    // await Utils.launchInBrowser(Uri.parse(
+                    //     "https://inglesguru.com/id/l${widget.lessonCode}"));
                     //  Navigator.of(context).push(Utils.createRoute(QuizPage(
                     //     lessonId: widget.lessonId,
                     //   )));

@@ -17,7 +17,7 @@ import 'package:sysbit/src/features/conversation_page/presentation/pages/convers
 import 'package:sysbit/src/features/home_page/presentation/widget/payment_bottom.dart';
 import 'package:sysbit/src/features/introduction_page/presentation/pages/introduction_page.dart';
 import 'package:sysbit/src/features/lesson_menu_page/presentation/pages/lesson_menu_page.dart';
-import 'package:sysbit/src/features/lessons_advanced_page/presentation/widget/advanced_lesson_item.dart';
+
 import 'package:sysbit/src/features/lessons_starter_page/presentation/widget/lesson_item_intro.dart';
 import 'package:sysbit/src/features/lessons_starter_page/presentation/widget/lesson_item_loading.dart';
 import 'package:sysbit/src/features/lessons_starter_page/data/model/lesson_mod.dart';
@@ -127,7 +127,7 @@ class _LessonsAdvancedPageState extends State<LessonsAdvancedPage> {
                                     color: Colors.black54,
                                   ),
                                   itemBuilder: (context, index) =>
-                                      AdvanceLessonItemWidget(
+                                      LessonItemWidget(
                                     index: index,
                                     lessonCode:
                                         data.result[index].lessonCode ?? "",
@@ -137,28 +137,31 @@ class _LessonsAdvancedPageState extends State<LessonsAdvancedPage> {
                                     title:
                                         "${index + 1}.${data.result[index].title!.toUpperCase()}",
                                     url: data.result[index].image,
-                                    onTapConversation: () async {
-                                      Navigator.of(context, rootNavigator: true)
-                                          .push(
-                                              Utils.zoomOutPageRoute(ScenePage(
-                                        lessonId:
-                                            data.result[index].lessonCode ?? "",
-                                      )));
-                                    },
-                                    onTapQuiz: () {
-                                      Navigator.of(context, rootNavigator: true)
-                                          .push(Utils.zoomOutPageRoute(QuizPage(
-                                              lessonId: data.result[index]
-                                                      .lessonCode ??
-                                                  "")));
-                                    },
-                                    onTapLearningAds: () {
-                                      Navigator.of(context, rootNavigator: true)
-                                          .push(Utils.zoomOutPageRoute(BrowserPage(
-                                              title: "Learning Ads",
-                                              url:
-                                                  "https://inglesguru.com/id/l${data.result[index].lessonCode}")));
-                                    },
+                                   onTaPContent: () {
+                                     Navigator.of(context,rootNavigator: true).push(Utils.zoomOutPageRoute(LessonMenuPage(lessonId: data.result[index].lessonCode,lessonTitle: data.result[index].title,imageUrl: data.result[index].image,)));
+                                   },
+                                    // onTapConversation: () async {
+                                    //   Navigator.of(context, rootNavigator: true)
+                                    //       .push(
+                                    //           Utils.zoomOutPageRoute(ScenePage(
+                                    //     lessonId:
+                                    //         data.result[index].lessonCode ?? "",
+                                    //   )));
+                                    // },
+                                    // onTapQuiz: () {
+                                    //   Navigator.of(context, rootNavigator: true)
+                                    //       .push(Utils.zoomOutPageRoute(QuizPage(
+                                    //           lessonId: data.result[index]
+                                    //                   .lessonCode ??
+                                    //               "")));
+                                    // },
+                                    // onTapLearningAds: () {
+                                    //   Navigator.of(context, rootNavigator: true)
+                                    //       .push(Utils.zoomOutPageRoute(BrowserPage(
+                                    //           title: "Learning Ads",
+                                    //           url:
+                                    //               "https://inglesguru.com/id/l${data.result[index].lessonCode}")));
+                                    // },
                                   ),
                                 );
                               },
