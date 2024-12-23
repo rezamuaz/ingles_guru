@@ -8,7 +8,6 @@ import 'package:sysbit/src/core/local_storage/object_box/word_repository.dart';
 import 'package:sysbit/src/core/theme/theme_config.dart';
 import 'package:sysbit/src/features/conversation_page/presentation/cubit/lesson_data_cubit.dart';
 import 'package:sysbit/src/features/signin_page/presentation/blocs/bloc/auth_bloc.dart';
-import 'package:sysbit/src/features/splash_page/presentation/cubits/device_info_cubit.dart';
 import 'package:sysbit/src/features/splash_page/presentation/pages/splash_page.dart';
 import 'package:sysbit/src/localization/app_localizations.dart';
 

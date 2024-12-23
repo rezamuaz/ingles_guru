@@ -22,7 +22,6 @@ import 'package:sysbit/src/features/root_page/presentation/pages/root_page.dart'
 import 'package:sysbit/src/features/signin_page/data/model/user_auth.dart';
 import 'package:sysbit/src/features/signin_page/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:sysbit/src/features/signin_page/presentation/widget/signing_loading.dart';
-import 'package:sysbit/src/features/splash_page/presentation/cubits/device_info_cubit.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
@@ -189,8 +188,8 @@ class _SigninPageState extends State<SigninPage> {
                                   children: [
                                     Platform.isAndroid
                                         ? Container(
-                                            constraints:
-                                                BoxConstraints(minWidth: 250),
+                                            constraints: const BoxConstraints(
+                                                minWidth: 250),
                                             child: GoogleAuthButton(
                                               onPressed: () async {
                                                 bool status = await Network
@@ -250,13 +249,12 @@ class _SigninPageState extends State<SigninPage> {
                                               ),
                                             ),
                                           )
-                                        : SizedBox(),
+                                        : const SizedBox(),
                                     Platform.isIOS
                                         ? Container(
-                                            constraints:
-                                                BoxConstraints(maxWidth: 250),
+                                            constraints: const BoxConstraints(
+                                                maxWidth: 250),
                                             child: SignInWithAppleButton(
-
                                               onPressed: () async {
                                                 bool status = await Network
                                                     .connection
@@ -273,28 +271,37 @@ class _SigninPageState extends State<SigninPage> {
                                                 }
                                                 if (context.mounted) {
                                                   showDialogue(context);
-                                                  final credential = await AppleSignInPlugin.signInWithApple();
-                                                    logger.d("email ${credential?.email}");
-                                                    logger.d("family ${credential?.familyName}");
-                                                    logger.d("given ${credential?.givenName}");
-                                                     logger.d("idn token ${credential?.identityToken}");
-                                                     logger.d("usr idnt ${credential?.userIdentifier}");
-                                                     logger.d("state ${credential?.state}");
-                                                    var userData = UserAuth(
-                                                        name: "${credential?.familyName}${credential?.givenName}"
-                                                            ,
-                                                        email:
-                                                            "${credential?.email}",
-                                                        sub: "${credential?.userIdentifier}",
-                                                        picture: "");
-          
-                                                    BlocProvider.of<AuthBloc>(
-                                                            context)
-                                                        .add(AuthEvent.signing(
-                                                            userData));
-                                                    setState(() {
-                                                      isLoading = !isLoading;
-                                                    });
+                                                  final credential =
+                                                      await AppleSignInPlugin
+                                                          .signInWithApple();
+                                                  logger.d(
+                                                      "email ${credential?.email}");
+                                                  logger.d(
+                                                      "family ${credential?.familyName}");
+                                                  logger.d(
+                                                      "given ${credential?.givenName}");
+                                                  logger.d(
+                                                      "idn token ${credential?.identityToken}");
+                                                  logger.d(
+                                                      "usr idnt ${credential?.userIdentifier}");
+                                                  logger.d(
+                                                      "state ${credential?.state}");
+                                                  var userData = UserAuth(
+                                                      name:
+                                                          "${credential?.familyName}${credential?.givenName}",
+                                                      email:
+                                                          "${credential?.email}",
+                                                      sub:
+                                                          "${credential?.userIdentifier}",
+                                                      picture: "");
+
+                                                  BlocProvider.of<AuthBloc>(
+                                                          context)
+                                                      .add(AuthEvent.signing(
+                                                          userData));
+                                                  setState(() {
+                                                    isLoading = !isLoading;
+                                                  });
                                                   // }
                                                 }
 
@@ -302,7 +309,7 @@ class _SigninPageState extends State<SigninPage> {
                                                 // after they have been validated with Apple (see `Integration` section for more information on how to do this)
                                               },
                                             ))
-                                        : SizedBox()
+                                        : const SizedBox()
                                   ],
                                 )
                               ],
