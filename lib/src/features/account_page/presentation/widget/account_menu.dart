@@ -44,7 +44,13 @@ class _AccountMenuState extends State<AccountMenu> {
             Navigator.of(context, rootNavigator: true).push(
                 Utils.zoomOutPageRoute(BrowserPage(
                     title: "Kebijakan Privasi",
-                    url: "${Env.baseUrl}${Env.privacyPolicyEp}")));
+                    url: "${Env.baseUrl}${Env.privacyPolicyEp}?os=android")));
+          }
+           if (Platform.isIOS) {
+            Navigator.of(context, rootNavigator: true).push(
+                Utils.zoomOutPageRoute(BrowserPage(
+                    title: "Kebijakan Privasi",
+                    url: "${Env.baseUrl}${Env.privacyPolicyEp}?os=ios")));
           }
         }, Icon(Icons.privacy_tip_outlined, color: widget.color),
             title: "Kebijakan Privasi"),
@@ -53,7 +59,13 @@ class _AccountMenuState extends State<AccountMenu> {
             Navigator.of(context, rootNavigator: true).push(
                 Utils.zoomOutPageRoute(BrowserPage(
                     title: "Syarat & Ketentuan",
-                    url: "${Env.baseUrl}${Env.termConditionsEp}")));
+                    url: "${Env.baseUrl}${Env.termConditionsEp}?os=android")));
+          }
+          if (Platform.isIOS) {
+            Navigator.of(context, rootNavigator: true).push(
+                Utils.zoomOutPageRoute(BrowserPage(
+                    title: "Syarat & Ketentuan",
+                    url: "${Env.baseUrl}${Env.termConditionsEp}?os=ios")));
           }
         }, Icon(Icons.description_outlined, color: widget.color),
             title: "Syarat & Ketentuan"),

@@ -29,7 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           //Get Device Info
           Map<String, dynamic> deviceInfo = await Utils().getPlatformInfo();
           String? fcmToken = "";
-          // fcmToken = await messaging.getToken();
+          fcmToken = await messaging.getToken();
           var idToken = await Utils.createJwt(user);
           var regis = RegisterReqMod(
               appId: user.sub,
@@ -100,7 +100,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 },
                 failure: (error) {
                   return error.maybeWhen(
-                    orElse: () => emit(AuthState.isError(error)),
+                    orElse: () {
+                        SharedPrefs.removeToken();
+                      SharedPrefs.removeUser();
+                     return emit(AuthState.isError(error));
+                    },
                     unauthorisedRequest: (reason) {
                       if (Platform.isAndroid) {
                         googleSignIn.disconnect();

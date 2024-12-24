@@ -201,8 +201,57 @@ class _SigninPageState extends State<SigninPage> {
                                 Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Platform.isAndroid
+                                    Platform.isIOS
                                         ? Container(
+                                            constraints: const BoxConstraints(
+                                                maxWidth: 250),
+                                            child: SignInWithAppleButton(
+                                               borderRadius: BorderRadius.circular(40),
+                                              onPressed: () async {
+                                                bool status = await Network
+                                                    .connection
+                                                    .hasInternetAccess;
+                                                if (!status) {
+                                                  if (context.mounted) {
+                                                    ScaffoldMessenger.of(
+                                                        context)
+                                                      ..hideCurrentMaterialBanner()
+                                                      ..showMaterialBanner(
+                                                          materialBanner);
+                                                    return;
+                                                  }
+                                                }
+                                                if (context.mounted) {
+                                                  showDialogue(context);
+                                                  final credential =
+                                                      await AppleSignInPlugin
+                                                          .signInWithApple();
+                                               
+                                                  var userData = UserAuth(
+                                                      name:
+                                                          "${credential?.familyName}${credential?.givenName}",
+                                                      email:
+                                                          "${credential?.email}",
+                                                      sub:
+                                                          "${credential?.userIdentifier}",
+                                                      picture: "");
+
+                                                  BlocProvider.of<AuthBloc>(
+                                                          context)
+                                                      .add(AuthEvent.signing(
+                                                          userData));
+                                                  setState(() {
+                                                    isLoading = !isLoading;
+                                                  });
+                                                  // }
+                                                }
+                                                // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
+                                                // after they have been validated with Apple (see `Integration` section for more information on how to do this)
+                                              },
+                                            ))
+                                        : const SizedBox(),
+                                    SizedBox(height: 10,),
+                                    Container(
                                             constraints: const BoxConstraints(
                                                 minWidth: 250),
                                             child: GoogleAuthButton(
@@ -263,68 +312,9 @@ class _SigninPageState extends State<SigninPage> {
                                                     bottom: 10),
                                               ),
                                             ),
-                                          )
-                                        : const SizedBox(),
-                                    Platform.isIOS
-                                        ? Container(
-                                            constraints: const BoxConstraints(
-                                                maxWidth: 250),
-                                            child: SignInWithAppleButton(
-                                              onPressed: () async {
-                                                bool status = await Network
-                                                    .connection
-                                                    .hasInternetAccess;
-                                                if (!status) {
-                                                  if (context.mounted) {
-                                                    ScaffoldMessenger.of(
-                                                        context)
-                                                      ..hideCurrentMaterialBanner()
-                                                      ..showMaterialBanner(
-                                                          materialBanner);
-                                                    return;
-                                                  }
-                                                }
-                                                if (context.mounted) {
-                                                  showDialogue(context);
-                                                  final credential =
-                                                      await AppleSignInPlugin
-                                                          .signInWithApple();
-                                                  logger.d(
-                                                      "email ${credential?.email}");
-                                                  logger.d(
-                                                      "family ${credential?.familyName}");
-                                                  logger.d(
-                                                      "given ${credential?.givenName}");
-                                                  logger.d(
-                                                      "idn token ${credential?.identityToken}");
-                                                  logger.d(
-                                                      "usr idnt ${credential?.userIdentifier}");
-                                                  logger.d(
-                                                      "state ${credential?.state}");
-                                                  var userData = UserAuth(
-                                                      name:
-                                                          "${credential?.familyName}${credential?.givenName}",
-                                                      email:
-                                                          "${credential?.email}",
-                                                      sub:
-                                                          "${credential?.userIdentifier}",
-                                                      picture: "");
-
-                                                  BlocProvider.of<AuthBloc>(
-                                                          context)
-                                                      .add(AuthEvent.signing(
-                                                          userData));
-                                                  setState(() {
-                                                    isLoading = !isLoading;
-                                                  });
-                                                  // }
-                                                }
-
-                                                // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
-                                                // after they have been validated with Apple (see `Integration` section for more information on how to do this)
-                                              },
-                                            ))
-                                        : const SizedBox()
+                                          ),
+                                       
+                                    
                                   ],
                                 )
                               ],
