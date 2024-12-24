@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sysbit/gen/assets.gen.dart';
 import 'package:sysbit/src/core/common/error_response_message.dart';
 import 'package:sysbit/src/core/common/network_exceptions.dart';
 import 'package:sysbit/src/core/dialog/flash_message_wrapper.dart';
@@ -43,12 +45,7 @@ class _ScenePageViewState extends State<ScenePageView> {
                             Utils.createRoute(ConversationPage(
                                 lessonCode: widget.lessonId ?? "")));
                       },
-                    ): const Center(
-                      child: Text(
-                        "Data not found",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
+                    ): Center(child: Column(mainAxisSize: MainAxisSize.min,crossAxisAlignment: CrossAxisAlignment.center,children: [Image.asset(width: MediaQuery.of(context).size.width*0.4,height:MediaQuery.of(context).size.width*0.4,Assets.webp.noInternet.path),Text("Tidak ada internet",style: GoogleFonts.inter(fontSize: 14,color: Colors.white),),],)),
               error: (error) => SizedBox(),
             );
           },

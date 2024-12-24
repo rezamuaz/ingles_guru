@@ -17,10 +17,8 @@ class FlashMessageContent extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        contents(context),
-        bubleIcon(),
-        Positioned(
-          top: -16,
+         Positioned(
+          top: 10,
           left: Constants.kPaddingS,
           child: Stack(
             alignment: Alignment.center,
@@ -34,20 +32,24 @@ class FlashMessageContent extends StatelessWidget {
             ],
           ),
         ),
+        contents(context),
+        // bubleIcon(),
+       
       ],
     );
   }
 
   Container contents(BuildContext context) {
     return Container(
-      height: 110,
+      height: 180,
       decoration: BoxDecoration(
         color: const Color(0xFFC72C41),
         borderRadius: BorderRadius.circular(Constants.kRadiusL),
       ),
       child: Row(
         children: [
-          const SizedBox(width: 48),
+          // const SizedBox(width: 48),
+          Image.asset(Assets.webp.noInternet.path),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(Constants.kPaddingS),
@@ -81,7 +83,7 @@ class FlashMessageContent extends StatelessWidget {
 
   Positioned bubleIcon() {
     return Positioned(
-      bottom: 0,
+      bottom: 16,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(Constants.kRadiusL),
         child: SvgPicture.asset(Assets.svgs.bubbles,height: 40,width: 40,)

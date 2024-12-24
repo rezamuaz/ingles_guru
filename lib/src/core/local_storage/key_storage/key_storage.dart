@@ -31,5 +31,8 @@ class Keys {
   /// Cache for LessonConversation [prefix Key]
   static const String jsonPrefixLessonConversation = "conv";
 
+  /// Cache for LearningAids [prefix Key]
+  static const String jsonPrefixLearningAids = "aids";
+
  
 }

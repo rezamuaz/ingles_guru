@@ -38,16 +38,14 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
             });
             //When Internet Connection Disable
           } else {
-            var cache = jsonDecode(
-                SharedPrefs.instance.get("${lessonId}_${Keys.quizSuffix}") ??
-                    "");
-
-            var data = (cache as List).map((e) => QuizMod.fromJson(e)).toList();
-            if (data.isEmpty) {
-              return emit(const QuizState.error(
+           String? jsonStr = SharedPrefs.instance.get("${lessonId}_${Keys.quizSuffix}");
+           if (jsonStr != null){
+              var data = (jsonDecode(jsonStr) as List).map((e) => QuizMod.fromJson(e)).toList();
+                  return emit(QuizState.loaded(data));     
+           }
+          return emit(const QuizState.error(
                   NetworkExceptions.noInternetConnection()));
-            }
-            return emit(QuizState.loaded(data));
+           
           }
         },
       );

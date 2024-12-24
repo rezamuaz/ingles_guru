@@ -2,11 +2,14 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:auto_size_text_plus/auto_size_text_plus.dart';
 import 'package:elegant_notification/elegant_notification.dart';
 import 'package:elegant_notification/resources/stacked_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:river_player/river_player.dart';
+import 'package:sysbit/gen/assets.gen.dart';
 import 'package:sysbit/src/core/local_storage/entities/progress.dart';
 import 'package:sysbit/src/core/local_storage/key_storage/key_storage.dart';
 import 'package:sysbit/src/core/local_storage/object_box/progress_repository.dart';
@@ -83,7 +86,9 @@ class _TutorialPlayerState extends State<TutorialPlayer> {
           
              context.read<ProgressRepository>().addProgress(widget.lessonCode,tutorial: true);
             ElegantNotification.success(
+              icon: Image.asset(Assets.webp.success.path,width: 90,height: 90,),
               width: 360,
+              iconSize: 60,
               toastDuration: const Duration(seconds: 4),
               isDismissable: false,
               stackedOptions: StackedOptions(
@@ -93,7 +98,7 @@ class _TutorialPlayerState extends State<TutorialPlayer> {
               ),
               title: const Text('Tutorial Selesai'),
               description:
-                  const Text('Anda telah dapat mengakses kuis dan flash card'),
+                  AutoSizeText("Anda telah dapat mengakses kuis dan flash card",style: GoogleFonts.inter(fontSize: 14),),
               onDismiss: () {
                 //Message when the notification is dismissed
               },

@@ -16,12 +16,14 @@ class MenuButton extends StatefulWidget {
       this.lable = "",
       this.onPress,
       required this.lessonCode,
+      this.onWarning,
       required this.ignore});
   final Widget icon;
   final Color iconBgColor;
   final String lable;
   final VoidCallback? onPress;
   final String lessonCode;
+  final VoidCallback? onWarning;
   final bool ignore;
 
   @override
@@ -105,7 +107,7 @@ class _MenuButtonState extends State<MenuButton> {
               builder:(context, snapshot) {
                 return InkWell(
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  onTap: check(snapshot)? widget.onPress: () {},
+                  onTap: check(snapshot)? widget.onPress: widget.onWarning,
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.06,
                     width: double.infinity,

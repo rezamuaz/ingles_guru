@@ -69,8 +69,6 @@ class NetworkExceptions with _$NetworkExceptions {
         late NetworkExceptions networkExceptions;
         if (error is DioException) {
           networkExceptions = whenDioError(error);
-        } else if (error is SocketException) {
-          networkExceptions = const NetworkExceptions.noInternetConnection();
         } else {
           networkExceptions = const NetworkExceptions.unexpectedError();
         }
@@ -112,7 +110,9 @@ class NetworkExceptions with _$NetworkExceptions {
         networkExceptions = const NetworkExceptions.requestCancelled();
         break;
       case DioExceptionType.connectionError:
-        networkExceptions = const NetworkExceptions.noInternetConnection();
+        if (error.type is SocketException){
+          networkExceptions = const NetworkExceptions.noInternetConnection();
+        }
         break;
       case DioExceptionType.badCertificate:
         networkExceptions = const NetworkExceptions.certificateFailed();

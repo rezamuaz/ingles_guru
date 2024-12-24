@@ -1,12 +1,18 @@
+import 'package:auto_size_text_plus/auto_size_text_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:elegant_notification/elegant_notification.dart';
+import 'package:elegant_notification/resources/stacked_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:sysbit/gen/assets.gen.dart';
 import 'package:sysbit/src/core/local_storage/cache/cache.dart';
 import 'package:sysbit/src/core/local_storage/object_box/progress_repository.dart';
 import 'package:sysbit/src/core/utils/utils.dart';
 import 'package:sysbit/src/features/browser_page/presentation/pages/browser_page.dart';
 import 'package:sysbit/src/features/flash_menu_page/presentation/page/flash_menu_page.dart';
+import 'package:sysbit/src/features/learning_aids_page/presentation/page/learning_aids_page.dart';
 import 'package:sysbit/src/features/lesson_menu_page/presentation/widget/menu_button.dart';
 import 'package:sysbit/src/features/lesson_menu_page/presentation/widget/menu_header.dart';
 import 'package:sysbit/src/features/quiz/presentation/page/quiz_page.dart';
@@ -112,6 +118,9 @@ class _LessonMenuPageViewState extends State<LessonMenuPageView> {
                       ),
                       iconBgColor: const Color(0xFF3624DB),
                       lable: "Quiz",
+                      onWarning: () {
+                        notif();
+                      },
                       onPress: () {
                         Navigator.of(context).push(Utils.createRoute(QuizPage(
                           lessonId: widget.lessonCode,
@@ -128,6 +137,9 @@ class _LessonMenuPageViewState extends State<LessonMenuPageView> {
                       ),
                       iconBgColor: const Color(0xFFDB21AC),
                       lable: "Flash Cards",
+                      onWarning: () {
+                        notif();
+                      },
                       onPress: () {
                         Navigator.of(context)
                             .push(Utils.createRoute(const FlashMenuPage()));
@@ -146,12 +158,8 @@ class _LessonMenuPageViewState extends State<LessonMenuPageView> {
                   iconBgColor: const Color(0xFFFB5812),
                   lable: "Learning Aids",
                   onPress: () async {
-                    Navigator.of(context,rootNavigator: true).push(Utils.zoomOutPageRoute(BrowserPage(title: "Learning Aids", url: "https://inglesguru.com/id/l${widget.lessonCode}")));
-                    // await Utils.launchInBrowser(Uri.parse(
-                    //     "https://inglesguru.com/id/l${widget.lessonCode}"));
-                    //  Navigator.of(context).push(Utils.createRoute(QuizPage(
-                    //     lessonId: widget.lessonId,
-                    //   )));
+                    Navigator.of(context,rootNavigator: true).push(Utils.zoomOutPageRoute(LearningAidsPage(widget.lessonCode)));
+                   
                   },
                 ),
               ],
@@ -174,5 +182,38 @@ class _LessonMenuPageViewState extends State<LessonMenuPageView> {
         )
       ],
     ));
+  }
+
+  void notif(){
+    ElegantNotification.info(
+     
+      showProgressIndicator: false,
+
+              icon: Image.asset(Assets.webp.error.path,width: 90,height: 90,),
+              width: 360,
+              iconSize: 60,
+              toastDuration: const Duration(seconds: 4),
+              isDismissable: false,
+              stackedOptions: StackedOptions(
+                key: 'top',
+                type: StackedType.same,
+                itemOffset: const Offset(-5, -5),
+              ),
+              title: const Text('Selesaikan Tutorial!'),
+              description:
+                  AutoSizeText("Selesaikan tutorial untuk mendapatkan akses",style: GoogleFonts.inter(fontSize: 14),),
+              onDismiss: () {
+                //Message when the notification is dismissed
+              },
+              onNotificationPressed: () {
+                //Message when the notification is pressed
+              },
+              border: const Border(
+                bottom: BorderSide(
+                  color: Colors.amber,
+                  width: 2,
+                ),
+              ),
+            ).show(context);
   }
 }

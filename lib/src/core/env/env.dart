@@ -22,6 +22,8 @@ abstract class Env {
   @EnviedField(obfuscate: true)
   static final String flashCardEp = _Env.flashCardEp;
   @EnviedField(obfuscate: true)
+  static final String learningAidsEp = _Env.learningAidsEp;
+  @EnviedField(obfuscate: true)
   static final String termConditionsEp = _Env.termConditionsEp;
   @EnviedField(obfuscate: true)
   static final String privacyPolicyEp = _Env.privacyPolicyEp;

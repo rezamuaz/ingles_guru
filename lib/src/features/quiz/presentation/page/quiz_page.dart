@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:sysbit/src/app.dart';
+import 'package:sysbit/src/core/common/error_response_message.dart';
+import 'package:sysbit/src/core/common/network_exceptions.dart';
+import 'package:sysbit/src/core/dialog/flash_message_wrapper.dart';
 import 'package:sysbit/src/core/local_storage/object_box/progress_repository.dart';
 import 'package:sysbit/src/core/utils/utils.dart';
 import 'package:sysbit/src/core/widget/dialog/dialog.dart';
@@ -19,6 +23,7 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  ErrorResponseMessage? _error;
   late PageController _pageController;
   int _currentPage = 0;
   List<QuizMod> quiz = [];
@@ -139,7 +144,9 @@ class _QuizPageState extends State<QuizPage> {
                     setState(() {
                       quiz = data;
                     });
+
                   },
+                  error: (error) => _onRequestError(error),
                 );
               },
               child: BlocBuilder<QuizBloc, QuizState>(
@@ -175,7 +182,7 @@ class _QuizPageState extends State<QuizPage> {
                                   },
                                 ));
                     },
-                    error: (error) => ErrorWidget(error),
+                    error: (error) => SizedBox(),
                   );
                 },
               ),
@@ -183,6 +190,14 @@ class _QuizPageState extends State<QuizPage> {
           ),
         ));
       }),
+    );
+  }
+     void _onRequestError(NetworkExceptions e) {
+ 
+    e.maybeWhen(
+      noInternetConnection:() =>  FlashMessage.error(context: context, error: e),
+      orElse: () => FlashMessage.error(context: context, error: e),
+      unprocessableEntity: (m) => _error = m,
     );
   }
 }
